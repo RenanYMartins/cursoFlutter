@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:meals/components/custom_app_bar.dart';
+import 'package:meals/components/meal_item.dart';
 import 'package:meals/models/category.dart';
 import '../data/dummy_data.dart';
+import '../components/category_item.dart';
 
 class CategoriesMealsScreen extends StatelessWidget {
   const CategoriesMealsScreen({super.key});
@@ -14,22 +17,11 @@ class CategoriesMealsScreen extends StatelessWidget {
     }).toList();
 
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          title: Text(
-            category.title,
-            style: const TextStyle(
-              color: Colors.white,
-              fontSize: 20,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          backgroundColor: Theme.of(context).colorScheme.primary,
-        ),
+        appBar: customAppBar(context, category.title),
         body: ListView.builder(
           itemCount: categoryMeals.length,
           itemBuilder: (context, index){
-            return Text(categoryMeals[index].title);
+            return MealItem(categoryMeals[index]);
           },
         ));
   }
