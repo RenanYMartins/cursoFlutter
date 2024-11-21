@@ -3,7 +3,10 @@ import 'package:meals/components/custom_app_bar.dart';
 import '../models/meal.dart';
 
 class MealDetailScreen extends StatelessWidget {
-  const MealDetailScreen({super.key});
+  const MealDetailScreen({super.key, required this.onToggleFavorite, required this.isFavorite});
+
+  final Function(Meal) onToggleFavorite;
+  final bool Function(Meal) isFavorite;
 
   Widget _createSectionTitle(BuildContext context, String title) {
     return Container(
@@ -67,25 +70,31 @@ class MealDetailScreen extends StatelessWidget {
             ),
             _createSectionTitle(context, "Passos"),
             _createSectionContainer(ListView.builder(
-              itemCount: meal.steps.length,
-              itemBuilder: (context, index){
-                return Column(
-                  children: [
-                    ListTile(
-                      title: Text(meal.steps[index]),
-                      leading: CircleAvatar(
-                        child: Text('${index + 1}'),
+                itemCount: meal.steps.length,
+                itemBuilder: (context, index) {
+                  return Column(
+                    children: [
+                      ListTile(
+                        title: Text(meal.steps[index]),
+                        leading: CircleAvatar(
+                          child: Text('${index + 1}'),
+                        ),
                       ),
-                    ),
-                  const Divider(
-                    color: Colors.grey,
-                  ),
-                  ],
-                );
-              }
-            ))
+                      const Divider(
+                        color: Colors.grey,
+                      ),
+                    ],
+                  );
+                }))
           ],
         ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        onPressed: () {
+          onToggleFavorite(meal);
+        },
+        child: Icon(isFavorite(meal) ? Icons.star : Icons.star_border),
       ),
     );
   }
